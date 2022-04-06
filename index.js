@@ -626,3 +626,189 @@ function FilterEmployees(){
         }
     }
 }
+function ModifyEmployee(){
+    let empId=document.getElementById("profile-container").title
+    // let card=document.getElementById(empId)
+    // card.getElementById()
+    var temp=data.find(x => x.id==empId)
+    let firstName=document.getElementById("profile_first_name").innerText
+    let lastName=document.getElementById("profile_last_name").innerText
+    let phoneNumber=document.getElementById("profile_phone_number").innerText
+    let email=document.getElementById("profile_email").innerText.toLowerCase()
+    let skype=document.getElementById("profile_skype_id").innerText
+    if(allLetter(firstName)==false){
+        alert("Please Enter a Valid First Name")
+        return
+    }
+    if(allLetter(lastName)==false){
+        alert("Please Enter a Valid Last Name")
+        return
+    }
+    if(allNumbers(phoneNumber)==false){
+        alert("Please Enter a Valid Phone Number")
+        return
+    }
+    let job=document.getElementsByName("profile_job_title")[0]
+    let job_tit=job.options[job.selectedIndex].text
+    let office=document.getElementsByName("profile_office")[0]
+    let office_loc=office.options[office.selectedIndex].text
+    let dept=document.getElementsByName("profile_department")[0]
+    let dept_type=dept.options[dept.selectedIndex].text
+    temp.first_name=titleCase(firstName)
+    temp.last_name=titleCase(lastName)
+    temp.email=email
+    // temp.phone_number=phoneNumber
+    // temp.skype_id=skype
+    if(phoneNumber==""){
+        temp.phone_number="NA"
+    }
+    else{
+        temp.phone_number=phoneNumber
+    }
+    if(skype==""){
+        temp.skype_id="NA"
+    }
+    else{
+        temp.skype_id=skype
+    }
+    temp.job_title=job_tit
+    temp.office=office_loc
+    temp.department=dept_type
+    console.log(temp,empId)
+
+    var imageSRC=document.getElementById(empId).getElementsByTagName("img")[0].src
+    let card=document.getElementById(empId)
+    document.getElementById("employeeData").removeChild(card)
+
+    const newCard=document.createElement("div")
+    newCard.className="card flex"
+    newCard.setAttribute("onclick","OpenProfile("+empId+");")
+    newCard.id=empId
+    newCard.style.order=empId
+
+    const profileImgDiv=document.createElement("div")
+    profileImgDiv.className="profileImg"
+
+    const profileImg=document.createElement("img")
+    profileImg.src=imageSRC
+    profileImg.alt="Profile Image"
+
+    profileImgDiv.appendChild(profileImg)
+    newCard.appendChild(profileImgDiv)
+
+    const profileDataDiv=document.createElement("div");
+    profileDataDiv.className="profileData"
+
+    const strong=document.createElement("strong");
+
+    strong.appendChild(document.createTextNode(temp.first_name+" "+temp.last_name));
+    profileDataDiv.appendChild(strong);
+    profileDataDiv.appendChild(document.createElement("br"));
+
+    profileDataDiv.appendChild(document.createTextNode(temp.job_title));
+    profileDataDiv.appendChild(document.createElement("br"));
+
+    profileDataDiv.appendChild(document.createTextNode(temp.department));
+    profileDataDiv.appendChild(document.createElement("br"));
+    
+    const call=document.createElement("img");
+    call.src=""
+    call.className="fa fa-phone-square"
+    call.id="contactImg"
+    call.style.padding="2px"
+    profileDataDiv.appendChild(call)
+
+    const mail=document.createElement("img");
+    mail.src=""
+    mail.className="fa fa-envelope"
+    mail.id="contactImg"
+    mail.style.padding="2px"
+    profileDataDiv.appendChild(mail)
+
+    const msg=document.createElement("img");
+    msg.src=""
+    msg.className="fa fa-comment"
+    msg.id="contactImg"
+    msg.style.padding="2px"
+    profileDataDiv.appendChild(msg)
+
+    const fav=document.createElement("img");
+    fav.src=""
+    fav.className="fa fa-star"
+    fav.id="contactImg"
+    fav.style.padding="2px"
+    profileDataDiv.appendChild(fav)
+
+    const like=document.createElement("img");
+    like.src=""
+    like.className="fa fa-heart"
+    like.id="contactImg"
+    like.style.padding="2px"
+    profileDataDiv.appendChild(like)
+
+    newCard.appendChild(profileDataDiv);
+    const element=document.getElementById("employeeData");
+    element.appendChild(newCard);
+    console.log(newCard)
+}
+
+function openForm() {
+    document.getElementById("form-container").style.display = "flex";
+    document.getElementById("openEmployee").style.display="none";
+    document.getElementById("content").style.filter="blur(5px)"
+}
+  
+function closeForm() {
+    document.getElementById("form-container").style.display = "none";
+    document.getElementById("openEmployee").style.display="initial";
+    document.getElementById("content").style.filter="blur(0px)"
+}
+
+function showHiddenJobs(){
+    document.getElementById("hiddenJobs").style.display="flex"
+    document.getElementById("viewMore").style.display="none"
+}
+
+function HideJobs(){
+    document.getElementById("hiddenJobs").style.display="none"
+    document.getElementById("viewMore").style.display="initial"   
+}
+
+function showProfileData(empId){
+    var profile=data.find(x => x.id==empId)
+    if(profile==null){
+        alert("Invalid Emp Id")
+        return
+    }
+    
+    let job=document.getElementsByName("profile_job_title")[0]
+    for(let i=0;i<job.options.length;i++){
+        if(job.options[i].value==profile.job_title){
+            job.selectedIndex=i
+            break
+        }
+    }
+    let dept=document.getElementsByName("profile_department")[0]
+    for(let i=0;i<dept.options.length;i++){
+        if(dept.options[i].value==profile.department){
+            dept.selectedIndex=i
+            break
+        }
+    }
+    let office=document.getElementsByName("profile_office")[0]
+    for(let i=0;i<office.options.length;i++){
+        if(office.options[i].value==profile.office){
+            office.selectedIndex=i
+            break
+        }
+    }
+    //console.log(profile,job.options)
+    document.getElementById("profile_first_name").innerText=profile.first_name;
+    document.getElementById("profile_last_name").innerText=profile.last_name;
+    document.getElementById("profile_email").innerText=profile.email;
+    document.getElementById("profile_phone_number").innerText=profile.phone_number;
+    document.getElementById("profile_skype_id").innerText=profile.skype_id;
+    // document.getElementById("profile_pic").src=profile.profile_pic
+    // console.log(profile)
+}
+
